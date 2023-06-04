@@ -37,3 +37,27 @@ our efficientnet_b0 comes in three main parts:
 - classifier - Turns the feature vector into a vector with the same dimensionality as the number of required output classes (since efficientnet_b0 is pretrained on ImageNet and because ImageNet has 1000 classes, out_features=1000 is the default).
 
 ![image](https://github.com/AICODER009/pytorch_transfer_learning/assets/133597851/5c17e07f-559a-452a-a5b4-e1b36b2ac011)
+
+# Freezing the base model and shifting the output layer to suit the given problem
+The process of transfer learning usually consists of two steps: 
+
+1)freeze some base layers of a pretrained model (mainly the features section;
+
+2) add and change the output layers (named head/classifier layers respectively) to suit your problem.
+
+![image](https://github.com/AICODER009/pytorch_transfer_learning/assets/133597851/f042cb77-e78f-47cb-a556-08bf7ff127df)
+
+The actual *torchvision.models.efficientnet_b0()* comes with ```out_features=1000``` because there are *1000 classes* in ImageNet, the dataset it was taught on. Nevertheless, for our needs, for the food vision problem, we only need ```out_features=3```.
+
+**Note:** To freeze layers indicates to hold them how they are during training. For illustration, if your model has pre trained layers, to freeze them would be to declare, "Don't alter any of the marks in these layers during training, keep them how they are." In nature, we'd like to save the pre-trained patterns/weights our model has memorized from ImageNet as a backbone and then only adjust the output layers.
+
+We can freeze all of the parameters/layers in the features section by specifying the attribute ```requires_grad=False```.
+
+``` ruby
+# Freeze all base layers in the "features" section of the model (the feature extractor) by setting requires_grad=False
+for param in model.features.parameters():
+    param.requires_grad = False
+```
+Now we've got a pretraiend model that's semi-frozen and has a customized classifier and now we can train it.
+
+**Note:** The more trainable parameters a model has, the more compute longer/power it takes to train. Freezing the base layers of our model and exiting it with less trainable parameters signifies our model should train quite fast. This is one huge advantage of transfer learning, taking the already memorized parameters/patterns of a model trained on a problem comparable to yours and only squeezing the outputs barely to fit your problem.
