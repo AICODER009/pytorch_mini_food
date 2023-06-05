@@ -43,7 +43,7 @@ The process of transfer learning usually consists of two steps:
 
 1)freeze some base layers of a pretrained model (mainly the features section;
 
-2) add and change the output layers (named head/classifier layers respectively) to suit your problem.
+2)add and change the output layers (named head/classifier layers respectively) to suit your problem.
 
 ![image](https://github.com/AICODER009/pytorch_transfer_learning/assets/133597851/f042cb77-e78f-47cb-a556-08bf7ff127df)
 
